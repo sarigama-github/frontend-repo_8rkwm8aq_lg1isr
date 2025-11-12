@@ -18,7 +18,11 @@ export default function QRLogin() {
         if (!res.ok) throw new Error('Failed to start session')
         const data = await res.json()
         setToken(data.token)
-        setApproveUrl(data.approve_url)
+        // Ensure approve URL is absolute so it works when scanned on a phone
+        const absoluteApprove = data.approve_url?.startsWith('http')
+          ? data.approve_url
+          : `${window.location.origin}${data.approve_url}`
+        setApproveUrl(absoluteApprove)
         setExpiresAt(data.expires_at)
         setStatus('pending')
       } catch (e) {
