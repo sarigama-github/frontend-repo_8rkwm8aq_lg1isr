@@ -59,6 +59,9 @@ export default function QRLogin() {
   const consume = async () => {
     if (!token) return
     await fetch(`${getBaseUrl()}/qr/consume/${token}`, { method: 'POST' })
+    // store a demo session and go to dashboard
+    localStorage.setItem('session', token)
+    window.location.href = '/dashboard'
   }
 
   return (
@@ -69,7 +72,7 @@ export default function QRLogin() {
       {approveUrl && (
         <div className="flex flex-col items-center gap-3">
           <img src={qrSrc} alt="QR code" className="rounded-lg border border-gray-200" />
-          <p className="text-sm text-gray-600 text-center">Scan with your signed-in mobile device to approve.</p>
+          <p className="text-sm text-gray-600 text-center">Scan with your phone to approve.</p>
           <a href={approveUrl} className="text-xs text-blue-600 underline break-all">Open approve link</a>
         </div>
       )}
